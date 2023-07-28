@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemple de réception de données PHP avec AJAX</title>
+    <link rel="stylesheet" href="Wimova.css">
+</head>
+<body>
+
+<div id="demo">
+    <ul>
+        <li><a onclick="loadDoc()">User</a></li>
+        <li><a href="#">Non disponible</a></li>
+        <li><a href="#">Non disponible</a></li>
+        <li><a href="#">Non disponible</a></li>
+    </ul>
+</div>
+
+<script src='//code.jquery.com/jquery-2.1.1.min.js'></script>
+<script src='//builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v1.3.0.js'></script>
+
+<script id='table-template' type='text/x-handlebars-template'>
+    <table class='table'>
+        <thead>
+        <tr class='table-header'>
+            <th class='header__item filter__link'>Nom</th>
+            <th class='header__item filter__link'>Prenom</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each this}}
+        <tr class='table-row'>
+            <td class='table-data'>{{Nom}}</td>
+            <td class='table-data'>{{Prenom}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    <div class="container">
+        <button onclick="window.location.href = 'Index.html'">Retour</button>
+    </div>
+</script>
+
+<script>
+    function loadDoc() {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            // Utilise Handlebars pour le rendu des données
+            const template = Handlebars.compile(document.getElementById('table-template').innerHTML);
+            const data = JSON.parse(this.responseText);
+
+            // Remplace le contenu de la div avec l'id "demo" par les données rendues
+            document.getElementById('demo').innerHTML = template(data);
+        };
+        xhttp.open('GET', 'Wimova.php', true);
+        xhttp.send();
+    }
+</script>
+
+</body>
+</html>
